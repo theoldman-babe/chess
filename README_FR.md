@@ -1,74 +1,64 @@
 # ♟️ Jeu d'Échecs en Python — avec `qtido`
 
-Un jeu d'échecs deux joueurs combinant une fenêtre graphique et des entrées en terminal, développé en Python avec la bibliothèque `qtido` pour l'affichage et `numpy` pour la logique de validation des mouvements.
+> Projet Python — jeu d'échecs à 2 joueurs avec interface graphique et validation des mouvements.
 
-> 🚧 **Statut du projet : presque terminé — fonctionnel mais perfectible.** La boucle de jeu principale, les mouvements de toutes les pièces et le rendu graphique fonctionnent entièrement (voir capture d'écran ci-dessous). Plusieurs règles des échecs sont encore manquantes et sont listées dans la section [Limitations connues](#limitations-connues).
+🚧 **Statut du projet : presque terminé — entièrement jouable et perfectible.**
 
 ---
 
-## 📋 Table des matières
+## Table des matières
 
-- [Aperçu du projet](#aperçu-du-projet)
-- [Dépendances](#dépendances)
-- [Installation](#installation)
-- [Lancer le jeu](#lancer-le-jeu)
+- [Ce que fait le projet](#ce-que-fait-le-projet)
+- [Ce qu'il faut installer](#ce-quil-faut-installer)
+- [Comment installer et lancer](#comment-installer-et-lancer)
 - [Comment jouer](#comment-jouer)
-- [Structure du code](#structure-du-code)
+- [Comment le code fonctionne](#comment-le-code-fonctionne)
 - [Limitations connues](#limitations-connues)
 
 ---
 
-## Aperçu du projet
+## Ce que fait le projet
 
 ![Capture d'écran de l'échiquier](screenshot.png)
 
-Le programme affiche un échiquier 8×8 dans une fenêtre graphique de 900×900 pixels. Chaque pièce est dessinée manuellement à l'aide de formes basiques (rectangles, disques et polygones). Les deux joueurs jouent à tour de rôle en saisissant des codes de cases dans le terminal (ex. `E2` → `E4`).
+Ce projet est un jeu d'échecs deux joueurs entièrement écrit en Python. Il affiche un vrai échiquier dans une fenêtre graphique et les joueurs saisissent leurs coups dans le terminal.
 
-- Les **pièces blanches** (B) sont dessinées en **jaune**
-- Les **pièces noires** (N) sont dessinées en **noir**
-- Les colonnes sont étiquetées **A à H**, les lignes **1 à 8**
+Ce qui rend ce projet intéressant, c'est que **chaque pièce est dessinée de zéro** à partir de formes basiques — cercles, rectangles et polygones. Il n'y a aucune image, aucun fichier externe, aucun sprite. Le plateau, les pions, la reine, le roi — tout est généré directement par le code.
+
+Le jeu intègre également un **système complet de validation des mouvements** : il vérifie que la pièce appartient au bon joueur, que la destination est bien sur le plateau, qu'on ne capture pas ses propres pièces, et que le mouvement respecte les règles des échecs propres à chaque pièce.
+
+- Les **pièces blanches** sont dessinées en **jaune**
+- Les **pièces noires** sont dessinées en **noir**
+- Les colonnes vont de **A à H**, les lignes de **1 à 8**
 
 ---
 
-## Dépendances
+## Ce qu'il faut installer
+
+### Python
+
+Il faut Python **3.10 ou supérieur** car le code utilise `match/case`, une fonctionnalité ajoutée à partir de Python 3.10.
 
 ### `qtido`
 
-`qtido` est une bibliothèque Python éducative conçue pour rendre l'apprentissage de la programmation simple et accessible, avec des fonctions aux noms clairs écrits en **français**.
+`qtido` est une bibliothèque Python éducative avec des fonctions simples nommées en français, conçue pour apprendre la programmation.
 
-> ⚠️ **Important :** `qtido` n'est **pas** une surcouche de la bibliothèque `turtle` de Python. C'est une surcouche de **PyQt5** (Qt pour Python). Elle s'appuie sur le framework Qt pour créer des fenêtres graphiques et dessiner des formes. Elle possède bien un mode tortue optionnel (`creer_tortue`), mais ce n'est pas son fonctionnement principal. Le nom « qtido » est d'ailleurs un mélange de **Qt** (le framework graphique sur lequel elle est construite) et de **ido** (langue universelle).
-
-Fonctions `qtido` utilisées dans ce projet :
-
-| Fonction | Rôle |
-|---|---|
-| `creer(w, h)` | Crée une fenêtre graphique de taille w×h |
-| `couleur(f, r, g, b)` | Définit la couleur courante (valeurs entre 0 et 1) |
-| `rectangle(f, x1, y1, x2, y2)` | Dessine un rectangle plein |
-| `disque(f, x, y, r)` | Dessine un disque plein de rayon r |
-| `polygone(f, points)` | Dessine un polygone à partir d'une liste de points |
-| `texte(f, x, y, taille, s)` | Affiche du texte sur la fenêtre |
-| `re_afficher(f)` | Rafraîchit / repeint la fenêtre |
-| `attendre_fermeture(f)` | Bloque l'exécution jusqu'à la fermeture de la fenêtre |
+> ⚠️ `qtido` n'est **pas** basé sur la bibliothèque `turtle` de Python. Il est construit par-dessus **PyQt5**, qui est une interface Python pour le framework graphique Qt. C'est Qt qui ouvre la fenêtre et dessine les formes. Le nom « qtido » vient de **Qt** (l'outil graphique utilisé en dessous) et de **ido** (une langue universelle).
 
 ### `numpy`
 
-Utilisé uniquement pour la fonction `logical_xor`, qui valide les **déplacements de la tour** — une tour peut se déplacer en ligne ou en colonne, mais pas les deux à la fois. `logical_xor` exprime cette contrainte en une seule ligne claire.
-
-### Version Python
-
-Python **3.8 ou supérieur** est requis. Python **3.10+** est recommandé car le code utilise la syntaxe `match/case` (filtrage par motif structurel).
+Utilisé pour une seule fonction : `logical_xor`. Elle permet de vérifier qu'une tour se déplace en ligne droite — soit horizontalement soit verticalement, mais jamais les deux à la fois.
 
 ---
 
-## Installation
+## Comment installer et lancer
 
-### 1. Créer un environnement virtuel (fortement recommandé)
+### Étape 1 — Créer un environnement virtuel
 
-L'utilisation d'un **venv** isole les dépendances de ce projet du reste de ton installation Python, évitant ainsi les conflits de versions.
+Un environnement virtuel garde toutes les bibliothèques du projet dans un seul endroit, séparé du reste de l'ordinateur. C'est la bonne façon de gérer les dépendances.
 
 ```bash
-# Se placer dans le dossier du projet
+# Aller dans le dossier du projet
 cd chemin/vers/ton/projet
 
 # Créer le venv
@@ -85,75 +75,71 @@ venv\Scripts\Activate.ps1
 venv\Scripts\activate.bat
 ```
 
-> Une fois activé, le terminal affiche `(venv)` au début de chaque ligne. Toutes les commandes `pip install` ci-dessous installeront les paquets dans ce venv uniquement, pas sur le système.
+> Une fois activé, `(venv)` apparaît au début de chaque ligne du terminal. Tout ce qu'on installe avec `pip` reste dans cet environnement uniquement.
 
-### 2. Installer les dépendances
+### Étape 2 — Installer les bibliothèques
 
 ```bash
-# PyQt5 doit être installé en premier — qtido est construit par-dessus
+# PyQt5 en premier — qtido en a besoin pour fonctionner
 pip install pyqt5
 
-# Installer qtido
+# Puis qtido
 pip install qtido
 
-# Installer numpy
+# Puis numpy
 pip install numpy
 ```
 
-> 💡 Sur certains systèmes Linux, PyQt5 et numpy peuvent aussi être installés via le gestionnaire de paquets système :
+> 💡 Sur Linux on peut aussi utiliser :
 > ```bash
 > sudo apt install python3-pyqt5 python3-numpy
 > ```
 
-### 3. Vérifier l'installation
+### Étape 3 — Vérifier que tout est installé
 
 ```bash
 python3 -c "from qtido import *; print('qtido OK')"
 python3 -c "import numpy; print('numpy OK')"
 ```
 
----
-
-## Lancer le jeu
-
-Avec le venv activé, place-toi dans le dossier contenant le fichier du jeu et lance :
+### Étape 4 — Lancer le jeu
 
 ```bash
 python3 echecs_chess.py
 ```
 
-Une fenêtre graphique de 900×900 pixels s'ouvre avec l'échiquier. Toutes les interactions se font **dans le terminal**.
+La fenêtre graphique s'ouvre automatiquement. On joue en tapant dans le terminal.
 
 ---
 
 ## Comment jouer
 
-### Notation des cases
+### Les codes de cases
 
-Les cases sont désignées par une **lettre** (colonne, A à H) suivie d'un **chiffre** (ligne, 1 à 8) :
+Chaque case a une lettre pour la colonne (A à H) et un chiffre pour la ligne (1 à 8) :
 
 ```
      A    B    C    D    E    F    G    H
   ┌────┬────┬────┬────┬────┬────┬────┬────┐
-8 │ ♜  │ ♞  │ ♝  │ ♛  │ ♚  │ ♝  │ ♞  │ ♜  │
+8 │ ♜  │ ♞  │ ♝  │ ♛  │ ♚  │ ♝  │ ♞  │ ♜  │  ← Pièces noires
 7 │ ♟  │ ♟  │ ♟  │ ♟  │ ♟  │ ♟  │ ♟  │ ♟  │
   │    │    │    │    │    │    │    │    │
   │    │    │    │    │    │    │    │    │
   │    │    │    │    │    │    │    │    │
   │    │    │    │    │    │    │    │    │
 2 │ ♙  │ ♙  │ ♙  │ ♙  │ ♙  │ ♙  │ ♙  │ ♙  │
-1 │ ♖  │ ♘  │ ♗  │ ♔  │ ♕  │ ♗  │ ♘  │ ♖  │
+1 │ ♖  │ ♘  │ ♗  │ ♔  │ ♕  │ ♗  │ ♘  │ ♖  │  ← Pièces blanches
   └────┴────┴────┴────┴────┴────┴────┴────┘
 ```
 
 ### Déroulement d'un tour
 
-1. Le terminal annonce à quel joueur c'est le tour (**BLANC** ou **NOIR**)
-2. Saisir le **code de la pièce à déplacer** (ex. `E2`)
-3. Saisir le **code de la case de destination** (ex. `E4`)
-4. Si le coup est invalide, un message d'erreur s'affiche et on peut réessayer
-5. L'échiquier se met à jour visuellement dans la fenêtre graphique
-6. Après chaque tour complet, le jeu demande si l'on veut continuer
+1. Le terminal annonce à quel joueur c'est le tour — **BLANC** ou **NOIR**
+2. On tape le code de la case de la pièce à déplacer (exemple : `E2`)
+3. On tape le code de la case de destination (exemple : `E4`)
+4. Si le coup est invalide, le jeu le signale et demande de réessayer
+5. L'échiquier se met à jour dans la fenêtre après chaque coup valide
+6. À la fin de chaque tour complet, le jeu demande si on veut continuer
 
 ```
 C'est au tour du joueur BLANC tes pions sont en ligne 7 :
@@ -161,121 +147,109 @@ Quel est le code de la pièce à déplacer ? E7
 Quel est le code de la case destinataire ? E5
 ```
 
-### Position initiale
-
-```
-Ligne 8 (Noirs) : Tour - Cavalier - Fou - Reine - Roi - Fou - Cavalier - Tour
-Ligne 7 (Noirs) : Pion × 8
-...
-Ligne 2 (Blancs) : Pion × 8
-Ligne 1 (Blancs) : Tour - Cavalier - Fou - Roi - Reine - Fou - Cavalier - Tour
-```
-
-> 💡 Attention : la **position du Roi et de la Reine blancs est inversée** par rapport à la convention standard des échecs (Roi en D1, Reine en E1 dans ce code, au lieu du Roi en E1 et la Reine en D1 habituellement).
-
 ---
 
-## Structure du code
+## Comment le code fonctionne
 
-### Rendu du plateau
+### Dessiner le plateau
 
-```
-tracer_plateau()
-  └── dessiner_cases_vides(ligne, colonne)   # colorie chaque case (damier)
-        └── tracer_rectangle_couleur()       # blanc ou gris foncé selon la parité
-```
+Le plateau est dessiné en parcourant les 64 cases avec deux boucles imbriquées. Chaque case est colorée en blanc ou gris foncé selon que la somme de ses indices de ligne et colonne est paire ou impaire — c'est ce qui crée le motif de damier.
 
-### Dessin des pièces
+### Dessiner les pièces
 
-Chaque pièce est construite à partir de primitives géométriques basiques :
+Chaque pièce a sa propre fonction de dessin, construite entièrement à partir de formes basiques :
 
 | Fonction | Pièce | Formes utilisées |
 |---|---|---|
-| `tracer_pion` | Pion | disque (tête) + rectangle (corps) |
+| `tracer_pion` | Pion | cercle (tête) + rectangle (corps) |
 | `tracer_tour` | Tour | 2 rectangles superposés |
-| `tracer_fou` | Fou | disque + triangle (polygone) |
-| `tracer_chevalier` | Cavalier | polygone irrégulier (tête de cheval) |
-| `tracer_reine` | Reine | polygone en forme de couronne |
-| `tracer_roi` | Roi | rectangle + croix (3 rectangles) |
+| `tracer_fou` | Fou | cercle + triangle |
+| `tracer_chevalier` | Cavalier | polygone à 6 points (forme de tête de cheval) |
+| `tracer_reine` | Reine | polygone en couronne à 7 points |
+| `tracer_roi` | Roi | rectangle + croix en 3 rectangles |
 
-La fonction `dessiner(f, s, x, y)` fait office de dispatcher : elle lit le nom de la pièce (ex. `"reine-B"`) et appelle la bonne fonction de tracé.
+La fonction `dessiner()` lit le nom de la pièce (ex. `"reine-B"`) et appelle automatiquement la bonne fonction de dessin.
 
-### Représentation de l'échiquier
+### Comment l'échiquier est stocké en mémoire
 
-L'échiquier est une **liste de 8 listes** (matrice 8×8) de chaînes de caractères :
+L'échiquier est une liste de 8 listes, chacune contenant 8 chaînes de caractères. Chaque chaîne est soit un nom de pièce comme `"pion-B"`, soit une chaîne vide `""` pour une case vide.
 
 ```python
 [
-  ["tour-N", "chevalier-N", ..., "tour-N"],  # index 0 = ligne 8 à l'écran
-  ["pion-N",  "pion-N",  ..., "pion-N" ],
-  ["", "", "", "", "", "", "", ""],           # lignes vides
+  ["tour-N", "chevalier-N", "fou-N", "reine-N", "roi-N", ...],  # ligne 8 — arrière des noirs
+  ["pion-N", "pion-N", "pion-N", ...],                          # ligne 7 — pions noirs
+  ["", "", "", "", "", "", "", ""],                              # lignes vides
   ...
-  ["pion-B",  "pion-B",  ..., "pion-B" ],
-  ["tour-B", "chevalier-B", ..., "tour-B"],  # index 7 = ligne 1 à l'écran
+  ["pion-B", "pion-B", "pion-B", ...],                          # ligne 2 — pions blancs
+  ["tour-B", "chevalier-B", "fou-B", "roi-B", "reine-B", ...],  # ligne 1 — arrière des blancs
 ]
 ```
 
-- Suffixe `-N` = pièce **Noire**
-- Suffixe `-B` = pièce **Blanche**
-- Case vide = chaîne vide `""`
+- `-B` = pièce Blanche
+- `-N` = pièce Noire
 
-### Conversion des coordonnées
+### Convertir un code de case en position dans le tableau
 
-`de_code_a_num_case("E4")` → `[3, 4]` (index de ligne 3, index de colonne 4 dans la matrice)
-
+`de_code_a_num_case("E4")` convertit un code de case en indices `[ligne, colonne]` :
 - Ligne : `int("4") - 1 = 3`
 - Colonne : `ord("E") - ord("A") = 4`
 
-### Validation des mouvements
+### Comment les mouvements sont validés
 
-`checker_le_move(echiquier, case_départ, case_arrivée, joueur)` retourne `True` ou `False`.
+Avant chaque déplacement, `checker_le_move()` effectue ces vérifications dans l'ordre :
 
-Vérifications effectuées dans l'ordre :
 1. La case de départ n'est pas vide
-2. On ne capture pas sa propre pièce
-3. Les deux coordonnées sont dans le plateau (0–7)
+2. Le joueur n'essaie pas de capturer sa propre pièce
+3. Les codes de cases sont valides et dans le plateau
 4. La pièce appartient bien au joueur courant
-5. Le mouvement respecte les règles propres à la pièce (via `match/case`)
+5. Le mouvement respecte les règles propres à ce type de pièce
 
-Règles par pièce :
+Règles de déplacement par pièce :
 
-| Pièce | Règle implémentée |
+| Pièce | Règle |
 |---|---|
-| Tour | Ligne droite uniquement (XOR : même colonne ou même ligne, pas les deux) |
-| Fou | Diagonal uniquement (`Δcol == Δligne`) |
-| Cavalier | Déplacement en L : décalage (2,1) ou (1,2) |
+| Tour | Même ligne ou même colonne uniquement (XOR — pas les deux) |
+| Fou | Diagonal uniquement — l'écart en colonne doit égaler l'écart en ligne |
+| Cavalier | En L — décalages de (2,1) ou (1,2) |
 | Roi | 1 case dans n'importe quelle direction |
-| Reine | Combinaison Tour + Fou |
-| Pion blanc | Avance vers les lignes décroissantes, capture en diagonale, double pas depuis la ligne 6 |
-| Pion noir | Avance vers les lignes croissantes, capture en diagonale, double pas depuis la ligne 1 |
+| Reine | Tour + Fou combinés |
+| Pion blanc | Monte (ligne diminue), capture en diagonale, double pas depuis la ligne 6 |
+| Pion noir | Descend (ligne augmente), capture en diagonale, double pas depuis la ligne 1 |
 
 ---
 
 ## Limitations connues
 
-Le projet est presque terminé et entièrement jouable, mais les fonctionnalités suivantes sont manquantes ou imparfaites — de bons candidats pour de futures améliorations :
+Le jeu est entièrement jouable mais certaines règles des échecs ne sont pas encore implémentées. Ce sont des manques normaux et honnêtes pour une première version de ce type de projet.
 
-**✅ Déjà fonctionnel**
-- Déplacement de base pour les 6 types de pièces
-- Capture des pièces adverses
-- Double pas initial du pion depuis la ligne de départ
-- Alternance des tours entre Blanc et Noir
-- Rafraîchissement graphique de l'échiquier après chaque coup
-- Validation des entrées avec retour d'erreur
+**✅ Ce qui fonctionne déjà**
+- Les 6 types de pièces se déplacent selon leurs règles
+- La capture des pièces adverses
+- Le double pas initial des pions depuis la ligne de départ
+- L'alternance correcte des tours
+- Le rafraîchissement visuel du plateau après chaque coup
+- Les coups invalides sont refusés avec un message d'erreur
+- La partie continue jusqu'à ce que les joueurs décident d'arrêter
 
-**❌ Pas encore implémenté**
-- **Détection de l'échec / échec et mat** — le jeu ne s'arrête pas quand le roi est en échec
-- **Roque** — le mouvement spécial roi + tour n'est pas supporté
-- **Prise en passant** — la capture spéciale du pion n'est pas supportée
-- **Promotion du pion** — un pion atteignant la dernière ligne reste un pion
-- **Vérification du chemin** — la tour, le fou et la reine peuvent actuellement sauter par-dessus des pièces (le chemin entre la case de départ et d'arrivée n'est pas vérifié)
-- **Condition de fin de partie** — le jeu s'arrête uniquement si le joueur tape `non` quand il y est invité
+**❌ Ce qui n'est pas encore implémenté**
+
+- **Détection de l'échec et de l'échec et mat** — le jeu ne détecte pas quand un roi est en échec. Un joueur peut ignorer un échec et continuer à jouer librement, ce qui n'est pas permis aux échecs.
+
+- **Vérification des pièces sur le chemin** — les tours, fous et reines peuvent actuellement traverser d'autres pièces. Aux vrais échecs, une pièce ne peut pas sauter par-dessus une autre (sauf le cavalier). Corriger cela nécessiterait de vérifier toutes les cases entre le départ et la destination.
+
+- **Le roque** — le mouvement spécial où le roi et une tour échangent leurs positions n'est pas implémenté.
+
+- **La prise en passant** — la règle spéciale de capture du pion qui s'applique juste après le double pas de l'adversaire n'est pas implémentée.
+
+- **La promotion du pion** — quand un pion atteint la dernière ligne, il devrait devenir une reine (ou une autre pièce). Pour l'instant il reste un pion.
+
+- **Gestion des erreurs de saisie** — si un joueur tape quelque chose d'invalide comme `"Z9"` ou appuie simplement sur Entrée, le programme plantera. Ajouter une vérification simple du format de l'entrée suffirait à corriger ça.
+
+- **Condition de fin de partie** — le jeu s'arrête uniquement quand un joueur tape `non`. Il n'y a pas de fin automatique quand un roi est capturé.
 
 ---
 
-## Désactiver le venv
-
-Une fois que tu as fini de jouer ou de travailler sur le projet :
+## Désactiver le venv quand on a fini
 
 ```bash
 deactivate
