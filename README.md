@@ -120,7 +120,7 @@ python3 -c "import numpy; print('numpy OK')"
 With the venv activated, navigate to the folder containing the chess file and run:
 
 ```bash
-python3 echiquier.py
+python3 echecs_chess.py
 ```
 
 A 900×900 graphical window will open showing the board. All player interaction happens **in the terminal**.
