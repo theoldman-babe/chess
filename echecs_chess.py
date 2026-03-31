@@ -96,7 +96,7 @@ def initialiser_echiquier ():
 ["","","","","","","",""],
 ["","","","","","","",""],
 ["pion-B","pion-B","pion-B","pion-B","pion-B","pion-B","pion-B","pion-B"],
-["tour-B","chevalier-B","fou-B","roi-B","reine-B","fou-B","chevalier-B","tour-B"]
+["tour-B","chevalier-B","fou-B","reine-B","roi-B","fou-B","chevalier-B","tour-B"]
 ]
      return echiquier
 
